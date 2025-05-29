@@ -116,7 +116,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Upload Area */
@@ -128,11 +128,18 @@
   background: linear-gradient(135deg, #fef7f0 0%, #f8f0e8 100%);
   transition: all 0.3s ease;
   cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .upload-area:hover {
   border-color: rgba(220, 113, 113, 0.5);
   background: linear-gradient(135deg, #f8f0e8 0%, #f5e6d8 100%);
+}
+
+.upload-area.drag-over {
+  border-color: #dc7171;
+  background: linear-gradient(135deg, #f5e6d8 0%, #f0ddd0 100%);
+  transform: scale(1.02);
 }
 
 .upload-icon {
@@ -166,6 +173,87 @@
   font-size: 0.9rem;
   margin: 0;
   line-height: 1.4;
+}
+
+.upload-hint small {
+  color: #8a7a6a;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Uploaded Files */
+.uploaded-files {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f0e8 0%, #f5e6d8 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(220, 113, 113, 0.1);
+}
+
+.uploaded-files h4 {
+  margin: 0 0 1rem 0;
+  color: #2c1810;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(220, 113, 113, 0.1);
+  transition: all 0.3s ease;
+}
+
+.file-item:hover {
+  box-shadow: 0 2px 8px rgba(220, 113, 113, 0.15);
+  transform: translateY(-1px);
+}
+
+.file-item:last-child {
+  margin-bottom: 0;
+}
+
+.file-name {
+  cursor: pointer;
+  color: #2c1810;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  flex: 1;
+  text-align: left;
+  margin-right: 1rem;
+}
+
+.file-name:hover {
+  color: #dc7171;
+  text-decoration: underline;
+}
+
+.file-size {
+  color: #8a7a6a;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+}
+
+.remove-file {
+  background: none;
+  border: none;
+  color: #dc7171;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.remove-file:hover {
+  background: rgba(220, 113, 113, 0.1);
+  color: #c96565;
 }
 
 /* Text Area Container */
@@ -315,6 +403,16 @@
   
   .container {
     padding: 0 1rem;
+  }
+
+  .file-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .file-name {
+    margin-right: 0;
   }
 }
 
