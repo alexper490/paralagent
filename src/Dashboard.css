@@ -298,6 +298,123 @@
   border-radius: 10px;
 }
 
+/* Document Type Selection */
+.document-type-section {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.document-type-section h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c1810;
+  margin-bottom: 2rem;
+}
+
+.document-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.document-type-button {
+  background: white;
+  border: 2px solid rgba(220, 113, 113, 0.2);
+  border-radius: 15px;
+  padding: 1.2rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c1810;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 113, 113, 0.1);
+}
+
+.document-type-button:hover {
+  border-color: rgba(220, 113, 113, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 113, 113, 0.15);
+}
+
+.document-type-button.selected {
+  background: linear-gradient(135deg, #dc7171 0%, #c96565 100%);
+  border-color: #dc7171;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 113, 113, 0.3);
+}
+
+.document-type-button.selected:hover {
+  box-shadow: 0 10px 30px rgba(220, 113, 113, 0.4);
+}
+
+/* User Prompt Section */
+.user-prompt-section {
+  margin-bottom: 3rem;
+}
+
+.user-prompt-section h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c1810;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.prompt-description {
+  text-align: center;
+  color: #5a4a3a;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.prompt-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.user-prompt-box {
+  width: 100%;
+  min-height: 120px;
+  padding: 1.5rem;
+  border: 2px solid rgba(220, 113, 113, 0.2);
+  border-radius: 15px;
+  background: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #2c1810;
+  resize: vertical;
+  transition: all 0.3s ease;
+  line-height: 1.6;
+  box-shadow: 0 4px 15px rgba(220, 113, 113, 0.1);
+}
+
+.user-prompt-box:focus {
+  outline: none;
+  border-color: #dc7171;
+  box-shadow: 0 0 0 3px rgba(220, 113, 113, 0.1);
+}
+
+.user-prompt-box::placeholder {
+  color: #8a7a6a;
+  font-style: italic;
+}
+
+.prompt-counter {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  font-size: 0.8rem;
+  color: #8a7a6a;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+}
+
 /* Action Section */
 .action-section {
   text-align: center;
@@ -345,6 +462,22 @@
 
 .create-document-button:active {
   transform: translateY(-1px);
+}
+
+.create-document-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.create-document-button.generating {
+  background: linear-gradient(135deg, #8a7a6a 0%, #6a5a4a 100%);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
 }
 
 .button-icon {
@@ -414,6 +547,20 @@
   .file-name {
     margin-right: 0;
   }
+
+  .document-type-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .document-type-button {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .user-prompt-box {
+    padding: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -432,5 +579,10 @@
   .create-document-button {
     padding: 0.9rem 2rem;
     font-size: 1rem;
+  }
+
+  .document-type-section h3,
+  .user-prompt-section h3 {
+    font-size: 1.5rem;
   }
 } 
