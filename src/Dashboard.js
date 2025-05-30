@@ -145,6 +145,13 @@ function Dashboard() {
       return;
     }
 
+    // Check if API key is configured
+    const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
+    if (!apiKey || apiKey === 'your-actual-openai-api-key-here') {
+      alert('OpenAI API key is not configured. Please check your .env.local file and ensure REACT_APP_OPENAI_API_KEY is set with your actual API key.');
+      return;
+    }
+
     setIsGenerating(true);
 
     try {
@@ -179,15 +186,19 @@ ${userPrompt}
 
 Generate a professional ${selectedDocumentType} document following the above guidelines. Use clear headings, proper legal formatting, and ensure all content is based solely on the provided information.`;
 
-      // Call GPT-4 API (Note: In production, this should be done through a backend API for security)
+      console.log('Making API request to OpenAI...');
+      console.log('API Key present:', !!apiKey);
+      console.log('API Key starts with:', apiKey.substring(0, 7) + '...');
+
+      // Call GPT-4 API
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}` // You'll need to set this
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: 'gpt-4-turbo-preview',
+          model: 'gpt-4o-mini',
           messages: [
             {
               role: 'system',
@@ -199,11 +210,31 @@ Generate a professional ${selectedDocumentType} document following the above gui
         })
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
       if (!response.ok) {
-        throw new Error('Failed to generate document. Please check your API key and try again.');
+        const errorData = await response.text();
+        console.error('API Error Response:', errorData);
+        
+        if (response.status === 401) {
+          throw new Error('Invalid API key. Please check your OpenAI API key in the .env.local file.');
+        } else if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+        } else if (response.status === 400) {
+          throw new Error('Bad request. The model name might be incorrect or the request format is invalid.');
+        } else {
+          throw new Error(`API request failed with status ${response.status}: ${errorData}`);
+        }
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
+
+      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        throw new Error('Invalid response format from OpenAI API');
+      }
+
       const generatedContent = data.choices[0].message.content;
 
       // Create DOCX document
@@ -225,9 +256,9 @@ Generate a professional ${selectedDocumentType} document following the above gui
       
       const docParagraphs = paragraphs.map(paragraph => {
         // Check if it's a heading (starts with #, all caps, or contains specific keywords)
-        const isHeading = paragraph.match(/^#+\s/) || 
-                         paragraph === paragraph.toUpperCase() && paragraph.length < 100 ||
-                         paragraph.match(/^(AGREEMENT|CONTRACT|MEMORANDUM|WILL|ARTICLES)/i);
+        const isHeading = (paragraph.match(/^#+\s/) || 
+                         (paragraph === paragraph.toUpperCase() && paragraph.length < 100) ||
+                         paragraph.match(/^(AGREEMENT|CONTRACT|MEMORANDUM|WILL|ARTICLES)/i));
         
         if (isHeading) {
           return new Paragraph({
