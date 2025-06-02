@@ -5,7 +5,7 @@ import Confetti from 'react-confetti';
 import './Dashboard.css';
 
 // Developer-configurable AI Model
-const DEV_CONFIG_AI_MODEL = 'gpt-4o-mini'; // <-- YOU CAN CHANGE THIS VARIABLE
+const DEV_CONFIG_AI_MODEL = 'gpt-4.1-2025-04-14'; // <-- YOU CAN CHANGE THIS VARIABLE
 
 function Dashboard() {
   const [textContent, setTextContent] = useState('');
